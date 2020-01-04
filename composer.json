@@ -9,6 +9,11 @@
             "email": "my_email@gmail.com"
         }
     ],
+    "autoload": {
+        "psr-4": {
+            "Manipulator\\": "src/"
+        }
+    },
     "require": {},
     "require-dev": {
         "phpunit/phpunit": "^8.5"
