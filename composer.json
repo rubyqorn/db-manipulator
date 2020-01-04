@@ -1,0 +1,16 @@
+{
+    "name": "rubyqorn/db-manipulator",
+    "description": "Package for comfortable interaction with PHP databases",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Anton Hideger",
+            "email": "my_email@gmail.com"
+        }
+    ],
+    "require": {},
+    "require-dev": {
+        "phpunit/phpunit": "^8.5"
+    }
+}
