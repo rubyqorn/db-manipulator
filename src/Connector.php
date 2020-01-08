@@ -33,7 +33,7 @@ class Connector
     private $settings;
 
 
-    protected function __construct()
+    public function __construct()
     {
         $this->configFileHandler = new ConfigFile();
         $this->settingsHandler = new SettingsHandler();
@@ -46,7 +46,7 @@ class Connector
      * 
      * @return \PDO
      */ 
-    public function connection()
+    protected function connection()
     {
         if (empty($this->getSettings())) {
             throw new WrongSettings('The getSettings method doesnt return a settings array');
