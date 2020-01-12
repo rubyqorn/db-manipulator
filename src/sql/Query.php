@@ -17,6 +17,14 @@ class Query extends Connector
      */ 
     protected $statement;
 
+    /**
+     * Array with questions marks for
+     * prepared statement SQL
+     * 
+     * @var array
+     */ 
+    protected $questionMarks = [];
+
     public function __construct()
     {
         parent::__construct();
@@ -41,13 +49,33 @@ class Query extends Connector
     }
 
     /**
+     * Prepared SQL statement
+     * 
+     * Prepare SQL statement and bind 
+     * values with question marks.
+     * Can be used with Insert and 
+     * Delete classes.
+     * 
+     * @return bool
+     */ 
+    public function push()
+    {
+        $processing = $this->prepare(
+            $this->convertSQLToString($this->sql)    
+        )->bind($this->statement, $this->values);
+
+        return $processing;
+
+    }
+
+    /**
      * This is abstaraction of fetchAll PDO method
      * 
      * @param \PDOStatement $statement
      * 
      * @return array
      */ 
-    public function fetchAll(\PDOStatement $statement)
+    protected function fetchAll(\PDOStatement $statement)
     {
         return $statement->fetchAll();
     }
@@ -59,7 +87,7 @@ class Query extends Connector
      * 
      * @return string
      * */ 
-    public function fetchColumn(\PDOStatement $statement)
+    protected function fetchColumn(\PDOStatement $statement)
     {
         return $statement->fetchColumn();
     }
@@ -71,10 +99,39 @@ class Query extends Connector
      * 
      * @return \Manipulator\SQL\Select
      */ 
-    public function query(string $query)
+    protected function query(string $query)
     {
         $this->statement = $this->connection()->query($query);
         return $this;
+    }
+
+    /**
+     * Prepare SQL statement
+     * 
+     * Assign statement property \PDOStatement object
+     * and return reference on this class
+     * 
+     * @param string $query 
+     * 
+     * @return \Manipulator\SQL\Query 
+     */ 
+    protected function prepare(string $query)
+    {
+        $this->statement = $this->connection->prepare($query);
+        return $this;
+    }
+
+    /**
+     * Bind values with question marks into SQL statement
+     * 
+     * @param \PDOStatement $statement 
+     * @param array $values 
+     * 
+     * @return bool
+     */ 
+    protected function bind(\PDOStatement $statement, array $values)
+    {
+        return $statement->execute($values);
     }
 
     /**
@@ -85,9 +142,39 @@ class Query extends Connector
      * 
      * @return string
      */ 
-    public function convertSQLToString(array $sql)
+    protected function convertSQLToString(array $sql)
     {
         return $this->parser->convertToString($sql, ' ');
+    }
+
+    /**
+     * Convert columns from sql to 
+     * array
+     * 
+     * @param string $columns
+     * 
+     * @return array
+     */ 
+    protected function convertColumnsToArray(string $values)
+    {
+        return $this->parser->convertToArray($values, ',');
+    }
+
+    /**
+     * Generat question marks for prepared statement SQL
+     * 
+     * @param array $columns 
+     * 
+     * @return array;
+     */ 
+    public function questionMarksGenerator(array $columns)
+    {
+        foreach($columns as $column)
+        {
+            $this->questionMarks[] = $column = '?';
+        }
+
+        return $this->parser->convertToString($this->questionMarks, ',');
     }
 
 }
