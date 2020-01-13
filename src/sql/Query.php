@@ -54,7 +54,7 @@ class Query extends Connector
      * Prepare SQL statement and bind 
      * values with question marks.
      * Can be used with Insert and 
-     * Delete classes.
+     * Update classes.
      * 
      * @return bool
      */ 
@@ -66,6 +66,18 @@ class Query extends Connector
 
         return $processing;
 
+    }
+
+    /**
+     * This method can be used with Delete class
+     * when we need just to execute SQL statement
+     * and get number of effected rows
+     * 
+     * @return int
+     */ 
+    public function drop()
+    {
+        return $this->exec($this->convertSQLToString($this->sql));
     }
 
     /**
@@ -90,6 +102,19 @@ class Query extends Connector
     protected function fetchColumn(\PDOStatement $statement)
     {
         return $statement->fetchColumn();
+    }
+
+    /**
+     * Execute SQL statement and return a number
+     * of executed rows
+     * 
+     * @param string $query 
+     * 
+     * @return int
+     */ 
+    protected function exec(string $query)
+    {
+        return $this->connection()->exec($query);
     }
 
     /**

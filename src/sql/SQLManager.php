@@ -24,4 +24,24 @@ class SQLManager
     {
         return new Insert($this->table);
     }
+
+    /**
+     * Update object creating
+     * 
+     * @return \Manipulator\SQL\Update
+     */ 
+    public function update()
+    {
+        return new Update($this->table);
+    }
+
+    /**
+     * Delete object creating
+     * 
+     * @return \Manipulator\SQL\Delete
+     */ 
+    public function delete()
+    {
+        return new Delete($this->table);
+    }
 }
