@@ -29,10 +29,10 @@ class SettingsHandler
      */ 
     public function setDatabaseSettings()
     {
-        $envFile = $this->envFileHandler->getSettingsFromFile('./env.ini');
-        $settingsFile = $this->configFileHandler->getSettingsFromFile('./config/settings.php');
+        $envFile = $this->envFileHandler->getSettingsFromFile($_SERVER['DOCUMENT_ROOT'] . '/env.ini');
+        $settingsFile = $this->configFileHandler->getSettingsFromFile($_SERVER['DOCUMENT_ROOT'] . '/config/settings.php');
 
-        $this->configFileHandler->putContentInFile('./config/settings.php', 'w', "<?php
+        $this->configFileHandler->putContentInFile($_SERVER['DOCUMENT_ROOT'] . '/config/settings.php', 'w', "<?php
             return \$settings = [
                 'driver' => '{$envFile['DB_DRIVER']}',
                 'host' => '{$envFile['DB_HOST']}',

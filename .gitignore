@@ -2,3 +2,4 @@ error.log
 /vendor/
 /config/settings.php
 env.ini
+composer.lock
