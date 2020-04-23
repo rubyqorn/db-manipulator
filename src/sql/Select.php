@@ -144,4 +144,19 @@ class Select extends Query
         $this->sql[] = "SELECT {$columns} FROM {$this->table} RIGHT JOIN {$joinedTable} ON {$condition}";
         return $this;
     }
+
+    /**
+     * Select data from two table 
+     * 
+     * @param string $tables 
+     * @param string $columns 
+     * @param string $condition 
+     * 
+     * @return \Manipulator\SQL\Select
+     */ 
+    public function fromTwoTables(string $tables, string $columns, string $condition)
+    {
+        $this->sql[] = "SELECT {$columns} FROM {$tables} WHERE {$condition}";
+        return $this;
+    }
 }
